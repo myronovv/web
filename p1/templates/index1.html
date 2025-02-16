@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор складу палива</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 5px 0;
+            text-align: left;
+        }
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #dff0d8;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Калькулятор складу сухої та горючої маси палива</h2>
+        <form method="post">
+            <label>H<sup>P</sup> (%): <input type="number" step="0.01" name="hp" required></label>
+            <label>C<sup>P</sup> (%): <input type="number" step="0.01" name="cp" required></label>
+            <label>S<sup>P</sup> (%): <input type="number" step="0.01" name="sp" required></label>
+            <label>N<sup>P</sup> (%): <input type="number" step="0.01" name="np" required></label>
+            <label>O<sup>P</sup> (%): <input type="number" step="0.01" name="op" required></label>
+            <label>W<sup>P</sup> (%): <input type="number" step="0.01" name="wp" required></label>
+            <label>A<sup>P</sup> (%): <input type="number" step="0.01" name="ap" required></label>
+            <button type="submit">Розрахувати</button>
+        </form>
+        
+        {% if result %}
+            {% if result == "Помилка у введених даних!" %}
+                <p class="error">{{ result }}</p>
+            {% else %}
+                <div class="result">
+                    <h3>Результати розрахунку:</h3>
+                    <p>Коефіцієнт переходу від робочої до сухої маси: {{ result.k_ps }}</p>
+                    <p>Коефіцієнт переходу від робочої до горючої маси: {{ result.k_pg }}</p>
+                    <h4>Склад сухої маси:</h4>
+                    <p>H<sup>C</sup>: {{ result.hs }}% | C<sup>C</sup>: {{ result.cs }}% | S<sup>C</sup>: {{ result.ss }}%</p>
+                    <p>N<sup>C</sup>: {{ result.ns }}% | O<sup>C</sup>: {{ result.os }}% | A<sup>C</sup>: {{ result.as }}%</p>
+                    <h4>Склад горючої маси:</h4>
+                    <p>H<sup>Г</sup>: {{ result.hg }}% | C<sup>Г</sup>: {{ result.cg }}% | S<sup>Г</sup>: {{ result.sg }}%</p>
+                    <p>N<sup>Г</sup>: {{ result.ng }}% | O<sup>Г</sup>: {{ result.og }}</p>
+                    <h4>Нижча теплота згоряння:</h4>
+                    <p>1.5. Нижча теплота згоряння для робочої маси за заданим складом компонентів палива становить: {{ result.q_r }} МДж/кг</p>
+                    <p>1.6. Нижча теплота згоряння для сухої маси за заданим складом компонентів палива становить: {{ result.q_s }} МДж/кг</p>
+                    <p>1.7. Нижча теплота згоряння для горючої маси за заданим складом компонентів палива становить: {{ result.q_g }} МДж/кг</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
