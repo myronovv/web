@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор прибутку</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center text-primary">🔆 Калькулятор прибутку від сонячної станції</h2>
+        
+        <form method="POST" class="mt-4 p-4 bg-white shadow rounded">
+            <div class="mb-3">
+                <label class="form-label">Середньодобова потужність (Pc, МВт)</label>
+                <input type="number" step="0.01" name="Pc" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Початкове σ (МВт)</label>
+                <input type="number" step="0.01" name="sigma1" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Покращене σ (МВт)</label>
+                <input type="number" step="0.01" name="sigma2" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Вартість електроенергії (грн/кВт·год)</label>
+                <input type="number" step="0.01" name="price" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Розрахувати</button>
+        </form>
+
+        {% if error %}
+        <div class="alert alert-danger mt-3 text-center">{{ error }}</div>
+        {% endif %}
+
+        {% if result %}
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white text-center">
+                        🔴 <b>До покращення</b>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>✅ <b>Енергія без небалансів:</b> {{ result.W1|round(2) }} МВт·год</li>
+                            <li>💰 <b>Прибуток:</b> {{ (result.P1 / 1000)|round(1) }} тис. грн</li>
+                            <li>⚠️ <b>Штрафи:</b> {{ (result.S1 / 1000)|round(1) }} тис. грн</li>
+                            <li>📉 <b>Чистий прибуток:</b> {{ (result.profit1 / 1000)|round(1) }} тис. грн</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white text-center">
+                        🟢 <b>Після покращення</b>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li>✅ <b>Енергія без небалансів:</b> {{ result.W3|round(2) }} МВт·год</li>
+                            <li>💰 <b>Прибуток:</b> {{ (result.P2 / 1000)|round(1) }} тис. грн</li>
+                            <li>⚠️ <b>Штрафи:</b> {{ (result.S2 / 1000)|round(1) }} тис. грн</li>
+                            <li>📈 <b>Чистий прибуток:</b> {{ (result.profit2 / 1000)|round(1) }} тис. грн</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
