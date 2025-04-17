@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>КЗ Калькулятор</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <script>
+        function showForm(example) {
+            document.getElementById('example').value = example;
+
+            document.querySelectorAll('.form-section').forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById('form-' + example).classList.add('active');
+
+            document.querySelectorAll('.tab').forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+            document.getElementById('tab-' + example).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function () {
+                const activeTab = document.querySelector('.tab.active');
+                if (activeTab) {
+                    const example = activeTab.id.replace('tab-', '');
+                    document.getElementById('example').value = example;
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <h1 style="text-align:center;">Калькулятор струмів короткого замикання</h1>
+
+    <div class="tabs" style="text-align:center;">
+        <div id="tab-7.1" class="tab" onclick="showForm('7.1')">Приклад 7.1</div>
+        <div id="tab-7.2" class="tab" onclick="showForm('7.2')">Приклад 7.2</div>
+        <div id="tab-7.4" class="tab" onclick="showForm('7.4')">Приклад 7.4</div>
+    </div>
+
+   <!-- Приклад 7.1 -->
+<form method="post" id="form-7.1" class="form-section">
+    <input type="hidden" name="example" value="7.1">
+    <h2>Приклад 7.1 – Вибір кабелю</h2>
+    <label>Потужність P (кВт): <input name="power" type="number" step="any" required></label>
+    <label>Напруга U (кВ): <input name="voltage" type="number" step="any" required></label>
+    <label>cos(φ): <input name="cos_phi" type="number" step="0.01" required></label>
+    <button type="submit">Розрахувати</button>
+</form>
+
+<!-- Приклад 7.2 -->
+<form method="post" id="form-7.2" class="form-section">
+    <input type="hidden" name="example" value="7.2">
+    <h2>Приклад 7.2 – Струм КЗ на шинах 10 кВ</h2>
+    <label>Напруга U (кВ): <input name="voltage" type="number" step="any" required></label>
+    <label>Опір Z (Ом): <input name="impedance" type="number" step="any" required></label>
+    <button type="submit">Розрахувати</button>
+</form>
+
+<!-- Приклад 7.4 -->
+<form method="post" id="form-7.4" class="form-section">
+    <input type="hidden" name="example" value="7.4">
+    <h2>Приклад 7.4 – ХПнЕМ (три режими)</h2>
+    <label>Напруга U (кВ): <input name="voltage" type="number" step="any" required></label>
+    <label>Опір Z (Ом): <input name="impedance" type="number" step="any" required></label>
+    <label>Режим:
+        <select name="regime">
+            <option value="normal">Нормальний</option>
+            <option value="minimal">Мінімальний</option>
+            <option value="emergency">Аварійний</option>
+        </select>
+    </label>
+    <button type="submit">Розрахувати</button>
+</form>
+
+<script>
+    function showForm(example) {
+        document.querySelectorAll('.form-section').forEach(function(section) {
+            section.classList.remove('active');
+        });
+        const form = document.getElementById('form-' + example);
+        if (form) form.classList.add('active');
+
+        document.querySelectorAll('.tab').forEach(function(tab) {
+            tab.classList.remove('active');
+        });
+        const tab = document.getElementById('tab-' + example);
+        if (tab) tab.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var example = "{{ example or '7.1' }}";
+        showForm(example);
+    });
+</script>
+
+    {% if result %}
+        <div class="result">
+            <h2>Результат:</h2>
+            <p>{{ result.info }}: <strong>{{ result.Ikz or result.I }} А</strong></p>
+        </div>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var example = "{{ example or '7.1' }}";
+            showForm(example);
+        });
+    </script>
+</body>
+</html>
