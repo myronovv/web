@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор Надійності та Збитків</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="mb-4 text-center">Калькулятор Надійності та Збитків</h1>
+        <form method="POST" class="card p-4 shadow-sm">
+            <h4 class="mb-3">Частоти відмов ωᵢ та часи відновлення tᵥᵢ</h4>
+            
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="number" step="0.0001" name="omega" class="form-control" value="0.01" required>
+                </div>
+                <div class="col">
+                    <input type="number" step="0.01" name="tvi" class="form-control" value="30" required>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="number" step="0.0001" name="omega" class="form-control" value="0.07" required>
+                </div>
+                <div class="col">
+                    <input type="number" step="0.01" name="tvi" class="form-control" value="0.07" required>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="number" step="0.0001" name="omega" class="form-control" value="0.015" required>
+                </div>
+                <div class="col">
+                    <input type="number" step="0.01" name="tvi" class="form-control" value="0.015" required>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="number" step="0.0001" name="omega" class="form-control" value="0.02" required>
+                </div>
+                <div class="col">
+                    <input type="number" step="0.01" name="tvi" class="form-control" value="0.02" required>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="number" step="0.0001" name="omega" class="form-control" value="0.03" required>
+                </div>
+                <div class="col">
+                    <input type="number" step="0.01" name="tvi" class="form-control" value="0.03" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col">
+                    <input type="number" step="0.0001" name="omega" class="form-control" value="0.06" required>
+                </div>
+                <div class="col">
+                    <input type="number" step="0.01" name="tvi" class="form-control" value="0.06" required>
+                </div>
+            </div>
+
+            <h4 class="mb-3">Дані для збитків </h4>
+
+            <div class="mb-3">
+                <input type="number" step="0.01" name="Z_av" class="form-control" value="23.6" required>
+            </div>
+            <div class="mb-3">
+                <input type="number" step="0.01" name="Z_pl" class="form-control" value="17.6" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Розрахувати</button>
+        </form>
+
+        {% if results %}
+        <div class="card mt-4 p-4 shadow-sm">
+            <h4>Результати розрахунків:</h4>
+            <ul class="list-group">
+                <li class="list-group-item">Частота відмов одноколової системи: {{ results.omega_oc }} рік⁻¹</li>
+                <li class="list-group-item">Середня тривалість відновлення: {{ results.t_v_oc }} год</li>
+                <li class="list-group-item">Коефіцієнт аварійного простою: {{ results.k_a_oc }}</li>
+                <li class="list-group-item">Коефіцієнт планового простою: {{ results.k_n_oc }}</li>
+                <li class="list-group-item">Частота відмов двоколової системи: {{ results.omega_dc }}</li>
+                <li class="list-group-item">Частота відмов двоколової системи з секційником: {{ results.omega_dc_sek }}</li>
+                <li class="list-group-item">Втрати енергії при аваріях: {{ results.M_W_nea }} кВт·год</li>
+                <li class="list-group-item">Втрати енергії при планових роботах: {{ results.M_W_nep }} кВт·год</li>
+                <li class="list-group-item">Загальні збитки: {{ results.M_Z }} грн</li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
